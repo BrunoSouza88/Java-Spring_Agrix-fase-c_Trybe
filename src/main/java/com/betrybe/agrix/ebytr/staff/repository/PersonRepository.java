@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Person JPA repository.
+ * javadoc.
  */
 public interface PersonRepository extends JpaRepository<Person, Long> {
 

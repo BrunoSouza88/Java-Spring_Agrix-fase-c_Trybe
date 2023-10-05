@@ -1,7 +1,7 @@
 package com.betrybe.agrix.ebytr.staff.security;
 
 /**
- * Enum representing a Role.
+ * javadoc.
  */
 public enum Role {
   ADMIN("ROLE_ADMIN"),

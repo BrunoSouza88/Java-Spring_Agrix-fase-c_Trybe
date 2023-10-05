@@ -5,24 +5,28 @@ import com.betrybe.agrix.ebytr.staff.exception.PersonNotFoundException;
 import com.betrybe.agrix.ebytr.staff.repository.PersonRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Service layer class for handling persons business logic.
+ * javadoc.
  */
 @Service
-public class PersonService {
+public class PersonService implements UserDetailsService {
 
   private final PersonRepository personRepository;
 
   @Autowired
-  public PersonService(
-      PersonRepository personRepository) {
+  public PersonService(PersonRepository personRepository) {
     this.personRepository = personRepository;
   }
 
   /**
-   * Returns a person for a given ID.
+   * javadoc.
    */
   public Person getPersonById(Long id) {
     Optional<Person> person = personRepository.findById(id);
@@ -35,7 +39,7 @@ public class PersonService {
   }
 
   /**
-   * Returns a person for a given username.
+   * javadoc.
    */
   public Person getPersonByUsername(String username) {
     Optional<Person> person = personRepository.findByUsername(username);
@@ -48,9 +52,16 @@ public class PersonService {
   }
 
   /**
-   * Creates a new person.
+   * javadoc.
    */
   public Person create(Person person) {
+    String hashedPassword = new BCryptPasswordEncoder().encode(person.getPassword());
+    person.setPassword(hashedPassword);
     return personRepository.save(person);
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    return this.getPersonByUsername(username);
   }
 }
